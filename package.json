@@ -1,0 +1,21 @@
+{
+  "name": "node-oscdeck",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "elgato-stream-deck": "^1.2.0",
+    "lodash": "^4.17.4",
+    "material-design-icons-svg": "^1.1.2",
+    "node-osc": "^2.1.0",
+    "parse-color": "^1.0.0",
+    "sharp": "^0.18.4",
+    "svg-scaler": "^0.1.5",
+    "synchronize": "^2.0.0"
+  }
+}
