@@ -41,7 +41,6 @@
       "key": 10,
       "symbol": "fan",
       "color": "orange",
-      "text": "Fan",
       "osc": [0, "/opentray", 1]
     }
   ]

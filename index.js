@@ -1,4 +1,4 @@
-const gfx = require('./gfx-elements.js');
+const gfx = require('./btn-render.js');
 const streamDeck = require('elgato-stream-deck');
 const sync = require('synchronize');
 const _ = require('lodash');
