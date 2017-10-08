@@ -6,57 +6,46 @@ const icons = require('material-design-icons-svg')(paths);
 var parseColor = require('parse-color');
 
 
-function Bitmap(data, info) {
-  this.data = data;
-  this.info = info;
-
-  this.ctorDesc = {
-    raw: {
-      width: info.width,
-      height: info.height,
-      channels: info.channels
-    }
+var imgDesc = function (obj) {
+  return {
+      width: obj.info.width,
+      height: obj.info.height,
+      channels: obj.info.channels
   };
 }
 
-var getIcon = sync(function(id, large, cb) {
+var getIcon = function(id, large) {
   var svg = icons.getSVG(id);
   if (!svg) svg = icons.getSVG("help");
 
   var d = (large) ? 200 : 150;
 
   var b = Buffer(svg);
-  sharp(b, {density: d})
+  return sharp(b, {density: d})
   .raw()
-  .toBuffer(function (err, data, info) {
-    cb(null, new Bitmap(data, info));
-  });
-});
+  .toBuffer({resolveWithObject: true});
+}
 
-var getText = sync(function(text, cb) {
+var getText = function(text) {
   var svg = Buffer('<svg width="72" height="72"><text x="35" y="64" font-family="sans-serif" font-size="13" fill="white" text-anchor="middle">' + text + '</text></svg>');
-  sharp(svg, {})
+  return sharp(svg, {})
   .raw()
-  .toBuffer(function (err, data, info) {
-    cb(null, new Bitmap(data, info));
-  });
-});
+  .toBuffer({resolveWithObject: true});
+}
 
-var getComposite = sync(function(bg, fg, cutout, cb) {
-  sharp(bg.data, bg.ctorDesc)
+var getComposite = function(bg, fg, cutout) {
+  return sharp(bg.data, { raw: imgDesc(bg) })
   .overlayWith(fg.data, {
     gravity: "north",
     cutout: cutout,
-    raw: fg.ctorDesc.raw
+    raw: imgDesc(fg)
   })
   .raw()
-  .toBuffer(function (err, data, info) {
-    cb(null, new Bitmap(data, info));
-  });
-});
+  .toBuffer({resolveWithObject: true});
+}
 
-var getBackground = sync(function(color, cb) {
-  sharp({
+var getBackground = function(color) {
+  return sharp({
     create: {
       width: 72,
       height: 72,
@@ -65,26 +54,19 @@ var getBackground = sync(function(color, cb) {
     }
   })
   .raw()
-  .toBuffer(function (err, data, info) {
-    cb(null, new Bitmap(data, info));
-  });
-});
+  .toBuffer({resolveWithObject: true});
+}
 
-var flatten = sync(function (img, cb) {
-  sharp(img.data, img.ctorDesc)
+var flatten = function (img, cb) {
+  return sharp(img.data, {raw: imgDesc(img)})
   .flatten()
   .raw()
-  .toBuffer(function (err, data, info) {
-    cb(null, new Bitmap(data, info));
-  });
+  .toBuffer({resolveWithObject: true});
   //.png().toFile("./examples/foo.png");
-
-});
+}
 
 
 var self = module.exports = {
-  Bitmap: Bitmap,
-
   Color: function (c) {
     var p = parseColor(c).rgb;
 
@@ -98,18 +80,42 @@ var self = module.exports = {
   },
 
   Button: function (color, id, text) {
+    var self = this;
     var bg = getBackground(color);
     var icon = getIcon(id, text == "");
     var text = getText(text);
 
-    var temp = getComposite(bg, icon, true);
-    temp = getComposite(temp, text, false);
-    this.stateOff = flatten(temp).data;
+    var prom = [];
 
+    prom[0] = Promise.all([bg, icon, text])
+    .then(
+      function (x) {
+        return Promise.all([getComposite(x[0], x[1], true), text]);
+      }
+    )
+    .then(
+      function (x) {
+        return getComposite(x[0], x[1], false);
+      }
+    ).then(flatten);
 
-    temp = getComposite(bg, icon, false);
-    temp = getComposite(temp, text, false);
+    prom[1] = Promise.all([bg, icon])
+    .then(
+      function (x) {
+        return Promise.all([getComposite(x[0], x[1], false), text]);
+      }
+    )
+    .then(
+      function (x) {
+        return getComposite(x[0], x[1], false);
+      }
+    ).then(flatten);
 
-    this.stateOn = flatten(temp).data;
+    this.done = Promise.all(prom);
+
+    this.done.then(function (x) {
+      self.stateOff = x[0];
+      self.stateOn = x[1];
+    });
   }
 };
