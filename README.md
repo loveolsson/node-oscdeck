@@ -3,7 +3,7 @@ node.js app to send OSC messages from an Elgato Stream Deck.
 
 **Project is experimental, untested and might change completely at any moment.**
 
-node-oscdeck is based on [node-elgato-stream-deck](https://github.com/Lange/node-elgato-stream-deck) by Lange. 
+node-oscdeck is based on [node-elgato-stream-deck](https://github.com/Lange/node-elgato-stream-deck) by Lange.
 Check that repository for button map and install instructions.
 
 ## Icons
@@ -30,11 +30,12 @@ targets is an array of OSC targets that can be used in the button assignments. T
 
 ```
   {
-    "key": 0,                 // The key to assign to, check node-elgato-stream-deck button map
-    "symbol": "skip-forward", // The icon rendered on the button, 
-                              // referring to the names from https://materialdesignicons.com/
-    "color": "green",         // Color of symbol; "red", "#FF0000", "rgb(255, 0, 0)" 
-    "text": "SKIP",           // Text rendered on button. If left blank, the icon is rendered bigger.
-    "osc": [0, "/skip", 1]    // The OSC message to send when button is pressed. [target, path, value]
+    "key": 0,                   // The key to assign to, check node-elgato-stream-deck button map
+    "symbol": "skip-forward",   // The icon rendered on the button,
+                                // referring to the names from https://materialdesignicons.com/
+    "color": "green",           // Color of symbol; "red", "#FF0000", "rgb(255, 0, 0)"
+    "text": "SKIP",             // Text rendered on button. If left blank, the icon is rendered bigger.
+    "oscDown": [0, "/skip", 1], // The OSC message to send when button is pressed. [target, path, value]
+    "oscUp": [0, "/skip", 0]    // The OSC message to send when button is released. [target, path, value]
   }
 ```
