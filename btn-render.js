@@ -5,6 +5,17 @@ const paths = require('material-design-icons-svg/paths');
 const icons = require('material-design-icons-svg')(paths);
 var parseColor = require('parse-color');
 
+function Color (c) {
+  var p = parseColor(c).rgb;
+
+  if (!p) p = parseColor("white").rgb;
+
+  return {
+    r: p[0],
+    g: p[1],
+    b: p[2]
+  };
+}
 
 var imgDesc = function (obj) {
   return {
@@ -66,22 +77,10 @@ var flatten = function (img, cb) {
 }
 
 
-var self = module.exports = {
-  Color: function (c) {
-    var p = parseColor(c).rgb;
-
-    if (!p) p = parseColor("white").rgb;
-
-    return {
-      r: p[0],
-      g: p[1],
-      b: p[2]
-    };
-  },
-
+module.exports = {
   Load: function (color, id, text) {
     var self = this;
-    var bg = getBackground(this.Color(color));
+    var bg = getBackground(Color(color));
     var icon = getIcon(id, text == "");
     var text = getText(text);
 

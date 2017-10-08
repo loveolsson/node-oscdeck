@@ -14,7 +14,6 @@
     "material-design-icons-svg": "^1.1.2",
     "node-osc": "^2.1.0",
     "parse-color": "^1.0.0",
-    "sharp": "^0.18.4",
-    "synchronize": "^2.0.0"
+    "sharp": "^0.18.4"
   }
 }
