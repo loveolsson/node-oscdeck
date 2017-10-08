@@ -30,28 +30,29 @@ function ControllerButton(b) {
 
   this.desc = b;
 
-
-
   this.g = new gfx.Button(gfx.Color(b.color), b.symbol, b.text);
 
-
   this.down = function () {
-    this.g.done.then(function() {
-      if (self.desc.osc) {
-        if (clients[self.desc.osc[0]]) {
-          clients[self.desc.osc[0]].send(self.desc.osc[1], self.desc.osc[2]);
-          console.log("Sent", clients[self.desc.osc[0]].host + ":" + clients[self.desc.osc[0]].port, self.desc.osc[1], self.desc.osc[2]);
-        }
-      }
+    if (self.desc.osc) {
+      var client = clients[self.desc.osc[0]];
 
-      streamDeck.fillImage(self.desc.key, self.g.stateOn.data);
+      if (client) {
+        var path = self.desc.osc[1];
+        var val = self.desc.osc[2];
+
+        client.send(path, val);
+        console.log("Sent", client.host + ":" + client.port, path, val);
+      }
+    }
+
+    this.g.done.then(function(x) {
+      streamDeck.fillImage(self.desc.key, x[1].data);
     });
   }
 
   this.up = function () {
-    this.g.done.then(function() {
-
-      streamDeck.fillImage(self.desc.key, self.g.stateOff.data);
+    this.g.done.then(function(x) {
+      streamDeck.fillImage(self.desc.key, x[0].data);
     });
   }
 

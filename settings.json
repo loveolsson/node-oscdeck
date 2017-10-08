@@ -36,6 +36,14 @@
       "symbol": "rewind",
       "color": "blue",
       "text": "Rewind"
+    },
+
+    {
+      "key": 10,
+      "symbol": "fan",
+      "color": "orange",
+      "text": "André",
+      "osc": [0, "/opentray", 1]
     }
   ]
 }

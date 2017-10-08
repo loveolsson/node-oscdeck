@@ -112,10 +112,5 @@ var self = module.exports = {
     ).then(flatten);
 
     this.done = Promise.all(prom);
-
-    this.done.then(function (x) {
-      self.stateOff = x[0];
-      self.stateOn = x[1];
-    });
   }
 };
