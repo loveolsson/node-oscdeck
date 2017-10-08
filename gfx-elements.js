@@ -19,7 +19,7 @@ function Bitmap(data, info) {
   };
 }
 
-var generateIconBitmap = sync(function(id, large, cb) {
+var getIcon = sync(function(id, large, cb) {
   var svg = icons.getSVG(id);
   if (!svg) svg = icons.getSVG("help");
 
@@ -33,7 +33,7 @@ var generateIconBitmap = sync(function(id, large, cb) {
   });
 });
 
-var generateText = sync(function(text, cb) {
+var getText = sync(function(text, cb) {
   var svg = Buffer('<svg width="72" height="72"><text x="35" y="64" font-family="sans-serif" font-size="13" fill="white" text-anchor="middle">' + text + '</text></svg>');
   sharp(svg, {})
   .raw()
@@ -42,7 +42,7 @@ var generateText = sync(function(text, cb) {
   });
 });
 
-var generateComposite = sync(function(bg, fg, cutout, cb) {
+var getComposite = sync(function(bg, fg, cutout, cb) {
   sharp(bg.data, bg.ctorDesc)
   .overlayWith(fg.data, {
     gravity: "north",
@@ -55,7 +55,7 @@ var generateComposite = sync(function(bg, fg, cutout, cb) {
   });
 });
 
-var generateBackground = sync(function(color, cb) {
+var getBackground = sync(function(color, cb) {
   sharp({
     create: {
       width: 72,
@@ -97,41 +97,19 @@ var self = module.exports = {
     };
   },
 
-
-
-  getIcon: function (id, large) {
-    return sync.await(generateIconBitmap(id, large, sync.defer()));
-  },
-
-  getBG: function (color) {
-    return sync.await(generateBackground(color, sync.defer()));
-  },
-
-  getText: function (text) {
-    return sync.await(generateText(text, sync.defer()));
-  },
-
-  getComposite: function (bg, fg, cutout) {
-    return sync.await(generateComposite(bg, fg, cutout, sync.defer()));
-  },
-
-  flatten: function (img) {
-    return sync.await(flatten(img, sync.defer()));
-  },
-
   Button: function (color, id, text) {
-    var bg = self.getBG(color);
-    var icon = self.getIcon(id, text == "");
-    var text = self.getText(text);
+    var bg = getBackground(color);
+    var icon = getIcon(id, text == "");
+    var text = getText(text);
 
-    var temp = self.getComposite(bg, icon, true);
-    temp = self.getComposite(temp, text, false);
-    this.stateOff = self.flatten(temp).data;
+    var temp = getComposite(bg, icon, true);
+    temp = getComposite(temp, text, false);
+    this.stateOff = flatten(temp).data;
 
 
-    temp = self.getComposite(bg, icon, false);
-    temp = self.getComposite(temp, text, false);
+    temp = getComposite(bg, icon, false);
+    temp = getComposite(temp, text, false);
 
-    this.stateOn = self.flatten(temp).data;
+    this.stateOn = flatten(temp).data;
   }
 };
