@@ -1,4 +1,3 @@
-const sync = require('synchronize');
 const sharp = require('sharp');
 
 const paths = require('material-design-icons-svg/paths');
