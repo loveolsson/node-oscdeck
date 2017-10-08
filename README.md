@@ -33,8 +33,8 @@ targets is an array of OSC targets that can be used in the button assignments. T
     "key": 0,                 // The key to assign to, check node-elgato-stream-deck button map
     "symbol": "skip-forward", // The icon rendered on the key, 
                               // referring to the names from https://materialdesignicons.com/
-    "color": "green",           // Color of symbol; "red", "#FF0000", "rgb(255, 0, 0)" 
-    "text": "SKIP",          // Text rendered on button. If left blank, the icon is rendered bigger.
+    "color": "green",         // Color of symbol; "red", "#FF0000", "rgb(255, 0, 0)" 
+    "text": "SKIP",           // Text rendered on button. If left blank, the icon is rendered bigger.
     "osc": [0, "/skip", 1]    // The OSC message to send when button is pressed. [target, path, value]
   }
 ```
