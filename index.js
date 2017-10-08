@@ -1,4 +1,3 @@
-const path = require('path');
 const gfx = require('./gfx-elements.js');
 const streamDeck = require('elgato-stream-deck');
 const sync = require('synchronize');
