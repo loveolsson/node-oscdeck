@@ -12,11 +12,11 @@ var clients = [];
 function ControllerButton(b) {
   var self = this;
 
-  if (typeof b.text != "string") {
+  if (!_.isString(b.text)) {
     b.text = "";
   }
 
-  if (typeof b.symbol != "string") {
+  if (_.isString(b.symbol)) {
     b.name = "help";
   }
 
@@ -59,18 +59,24 @@ function ControllerButton(b) {
   self.setImage(false);
 }
 
-
-// Load button images
+// Clear button displays
 _.forEach(_.range(0, 15), function (i) {
   streamDeck.fillColor(i, 0, 0, 0);
 });
 
+// Set up buttons from settings file
 _.forEach(settings.buttons, function (b) {
-  if (typeof b.key == "number" && b.key >= 0 && b.key < 15) {
+  if (_.isNumber(b.key) && _.inRange(b.key, 0, 15)) {
     buttons[b.key] = new ControllerButton(b);
   }
 });
 
+// Set up targets from settings file
+_.forEach(settings.targets, function (c) {
+  clients.push(new osc.Client(c.host, c.port));
+});
+
+// Set up Stream Deck callbacks
 streamDeck.on('down', keyIndex => {
   if (buttons[keyIndex]) {
     buttons[keyIndex].down();
@@ -85,8 +91,4 @@ streamDeck.on('up', keyIndex => {
 
 streamDeck.on('error', error => {
   console.error(error);
-});
-
-_.forEach(settings.targets, function (c) {
-  clients.push(new osc.Client(c.host, c.port));
 });
