@@ -1,5 +1,5 @@
 # node-oscdeck
-node.js app to send OSC messages from a Elgato Stream Deck.
+node.js app to send OSC messages from an Elgato Stream Deck.
 
 **Project is experimental, untested and might change completely at any moment.**
 
