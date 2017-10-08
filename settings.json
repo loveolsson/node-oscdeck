@@ -22,7 +22,6 @@
     {
       "key": 2,
       "symbol": "skip-forward",
-      "color": "magenta",
       "text": "Skip"
     },
     {
@@ -42,7 +41,7 @@
       "key": 10,
       "symbol": "fan",
       "color": "orange",
-      "text": "André",
+      "text": "Fan",
       "osc": [0, "/opentray", 1]
     }
   ]

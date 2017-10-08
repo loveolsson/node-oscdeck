@@ -17,10 +17,10 @@ var imgDesc = function (obj) {
 var getIcon = function(id, large) {
   var svg = icons.getSVG(id);
   if (!svg) svg = icons.getSVG("help");
+  var b = Buffer(svg);
 
   var d = (large) ? 200 : 150;
 
-  var b = Buffer(svg);
   return sharp(b, {density: d})
   .raw()
   .toBuffer({resolveWithObject: true});
@@ -79,9 +79,9 @@ var self = module.exports = {
     };
   },
 
-  Button: function (color, id, text) {
+  Load: function (color, id, text) {
     var self = this;
-    var bg = getBackground(color);
+    var bg = getBackground(this.Color(color));
     var icon = getIcon(id, text == "");
     var text = getText(text);
 
@@ -111,6 +111,6 @@ var self = module.exports = {
       }
     ).then(flatten);
 
-    this.done = Promise.all(prom);
+    return Promise.all(prom);
   }
 };

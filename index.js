@@ -24,23 +24,19 @@ function ControllerButton(b) {
     b.name = "help";
   }
 
-  if (!b.color) {
-    b.color = "white";
-  }
-
   this.desc = b;
 
-  this.g = new gfx.Button(gfx.Color(b.color), b.symbol, b.text);
+  this.imgLoaded = gfx.Load(b.color, b.symbol, b.text);
 
   this.setImage = function (state) {
     var index = state ? 1 : 0;
 
-    this.g.done.then(function(x) {
+    this.imgLoaded.then(function(x) {
       streamDeck.fillImage(self.desc.key, x[index].data);
     });
   }
 
-  this.down = function () {
+  this.sendOsc = function (state) {
     if (self.desc.osc) {
       var client = clients[self.desc.osc[0]];
 
@@ -52,6 +48,10 @@ function ControllerButton(b) {
         console.log("Sent", client.host + ":" + client.port, path, val);
       }
     }
+  }
+
+  this.down = function () {
+    self.sendOsc();
 
     self.setImage(true);
   }
