@@ -12,7 +12,7 @@ The icons for the Stream Deck buttons are created from SVG versions of the https
 The symbols are currently rendered synchronously at startup and is really slow.
 
 ## Settings file
-The settings are loaded from the settings.js file.
+The settings are loaded from the settings.json file.
 
 ### Targets
 targets is an array of OSC targets that can be used in the button assignments. Targets are refered to by index in this array.
