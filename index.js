@@ -33,12 +33,14 @@ function ControllerButton(b) {
   }
 
   this.sendOsc = function (state) {
-    if (self.desc.osc) {
-      var client = clients[self.desc.osc[0]];
+    var o = state ? self.desc.oscDown : self.desc.oscUp;
+
+    if (o) {
+      var client = clients[o[0]];
 
       if (client) {
-        var path = self.desc.osc[1];
-        var val = self.desc.osc[2];
+        var path = o[1];
+        var val = o[2];
 
         client.send(path, val);
         console.log("Sent", client.host + ":" + client.port, path, val);
@@ -47,12 +49,14 @@ function ControllerButton(b) {
   }
 
   this.down = function () {
-    self.sendOsc();
+    self.sendOsc(true);
 
     self.setImage(true);
   }
 
   this.up = function () {
+    self.sendOsc(false);
+
     self.setImage(false);
   }
 
