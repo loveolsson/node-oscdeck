@@ -77,6 +77,8 @@ var flatten = sync(function (img, cb) {
   .toBuffer(function (err, data, info) {
     cb(null, new Bitmap(data, info));
   });
+  //.png().toFile("./examples/foo.png");
+
 });
 
 
@@ -110,7 +112,10 @@ var self = module.exports = {
   },
 
   getComposite: function (bg, fg, cutout) {
-    var img = sync.await(generateComposite(bg, fg, cutout, sync.defer()));
+    return sync.await(generateComposite(bg, fg, cutout, sync.defer()));
+  },
+
+  flatten: function (img) {
     return sync.await(flatten(img, sync.defer()));
   },
 
@@ -120,9 +125,13 @@ var self = module.exports = {
     var text = self.getText(text);
 
     var temp = self.getComposite(bg, icon, true);
-    this.stateOff = self.getComposite(temp, text, false).data;
+    temp = self.getComposite(temp, text, false);
+    this.stateOff = self.flatten(temp).data;
+
 
     temp = self.getComposite(bg, icon, false);
-    this.stateOn = self.getComposite(temp, text, false).data;
+    temp = self.getComposite(temp, text, false);
+
+    this.stateOn = self.flatten(temp).data;
   }
 };
