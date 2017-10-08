@@ -18,9 +18,9 @@ function Color (c) {
 
 var imgDesc = function (obj) {
   return {
-      width: obj.info.width,
-      height: obj.info.height,
-      channels: obj.info.channels
+    width: obj.info.width,
+    height: obj.info.height,
+    channels: obj.info.channels
   };
 }
 
