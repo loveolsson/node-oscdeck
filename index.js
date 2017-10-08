@@ -32,6 +32,14 @@ function ControllerButton(b) {
 
   this.g = new gfx.Button(gfx.Color(b.color), b.symbol, b.text);
 
+  this.setImage = function (state) {
+    var index = state ? 1 : 0;
+
+    this.g.done.then(function(x) {
+      streamDeck.fillImage(self.desc.key, x[index].data);
+    });
+  }
+
   this.down = function () {
     if (self.desc.osc) {
       var client = clients[self.desc.osc[0]];
@@ -45,18 +53,14 @@ function ControllerButton(b) {
       }
     }
 
-    this.g.done.then(function(x) {
-      streamDeck.fillImage(self.desc.key, x[1].data);
-    });
+    self.setImage(true);
   }
 
   this.up = function () {
-    this.g.done.then(function(x) {
-      streamDeck.fillImage(self.desc.key, x[0].data);
-    });
+    self.setImage(false);
   }
 
-  this.up();
+  self.setImage(false);
 }
 
 
