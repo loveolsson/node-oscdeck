@@ -15,7 +15,7 @@ The symbols are currently rendered synchronously at startup and is really slow.
 The settings are loaded from the settings.json file.
 
 ### Targets
-targets is an array of OSC targets that can be used in the button assignments. Targets are referred to by index in this array.
+"targets" is an array of OSC targets that can be used in the button assignments. Targets are referred to by index in this array.
 ```
 "targets": [
     { "host": "localhost", "port": 53000 }
